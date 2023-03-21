@@ -1,17 +1,52 @@
+import java.util.*;
+
 public class DuplicadosNao{
-    int[] array1 = {1,2,3,4,5,6,7,44,55,66,77}; 
-    int[] array2 = {12,324,53,74,85,96,17,44,55,66,77}; 
-    public static void main(String[] args) throws Exception {
-        int[] arrayJob = new DuplicadosNao().array1;
-        int[] arrayIter = new DuplicadosNao().array2;
+    public static List array(boolean value){
+        List<Integer> array = new ArrayList<>(); 
+        for(int i = 0 ; i<=10000; i++){
+            if(value) {
+                array.add(new Random().nextInt(11));
+            }else{
+                array.add(i);
+            }
+        }
+
+        return array;
+    }
+    public static void main(String[] args){
+        List arrayJob = array(false);
+        List arrayIter = array(true);
+        Hashtable <String, Boolean> hash = new Hashtable<>();
         String value = "";
-        for(int i = 0 ; i < arrayJob.length ; i++ ){
-            for(int r = 0; r < arrayIter.length; r++ ){
-                if(arrayJob[i] == arrayIter[r]){
-                    value += arrayIter[r]+" ";
+        String stringJob = "";
+        String stringIter = "";
+        long timeInit = System.currentTimeMillis();
+        for(int i = 0 ; i < arrayJob.size() ; i++ ){
+            stringJob = ""+arrayJob.get(i);
+            stringIter = ""+arrayIter.get(i);
+            
+            hash.put(stringJob, true);
+
+            Boolean validation = hash.containsKey(stringIter);            
+            if(validation){ 
+               value += arrayIter.get(i)+" ";
+            }
+        }   
+        long timeEnd = System.currentTimeMillis() ;
+        
+        System.out.println("Quantidade de strings encontradas " +value.length() +". Tempo de execução hashtable: " +(timeEnd - timeInit));
+        
+        value = "";
+        long timeInit1 = System.currentTimeMillis();
+        for(int i = 0 ; i < arrayJob.size() ; i++ ){
+            for(int r = i; r < arrayIter.size(); r++ ){
+                if(arrayJob.get(i) == arrayIter.get(r)){
+                    value += arrayIter.get(r)+" ";
                 }
             }   
         }
-        System.out.println(value);
+        long timeEnd1 = System.currentTimeMillis();
+
+        System.out.println( "Quantidade de strings encontradas "+value.length()+ ". Tempo de execução com for aninhado: " +(timeEnd1 - timeInit1));
     }
 }
